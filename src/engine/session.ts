@@ -45,7 +45,7 @@ export type Action =
   | { type: 'RESUME'; session: Session }
   | { type: 'BEGIN_ROUNDS' }
   | { type: 'SHOW_BRIEF' }
-  | { type: 'BACK_TO_ROUND' }
+  | { type: 'STEP_BACK' }
   | { type: 'SELECT_GROUP'; groupId: string }
   | { type: 'PICK_OPTION'; option: OptionId }
   | { type: 'CONFIRM' }
@@ -72,8 +72,23 @@ export function reducer(s: Session, a: Action): Session {
       return { ...s, phase: 'decide' }
     case 'SHOW_BRIEF':
       return { ...s, phase: 'brief' }
-    case 'BACK_TO_ROUND':
-      return { ...s, phase: 'decide' }
+    /**
+     * Undo exactly one forward step, wherever we are. Every screen is derived from the
+     * stored choices rather than from accumulated mutations, so stepping backward never
+     * loses a group's answer — the round you return to still has everything locked in,
+     * ready to be unlocked and changed if that is why you came back.
+     */
+    case 'STEP_BACK': {
+      const cleared = { ...s, activeGroupId: null, pendingOption: null }
+      if (s.phase === 'final' && s.realized) return { ...cleared, realized: false }
+      if (s.phase === 'final') return { ...cleared, phase: 'reveal', round: 4 }
+      if (s.phase === 'reveal') return { ...cleared, phase: 'decide' }
+      if (s.phase === 'decide') {
+        if (s.round > 1) return { ...cleared, phase: 'reveal', round: (s.round - 1) as RoundNumber }
+        return { ...cleared, phase: 'brief' }
+      }
+      return s
+    }
     case 'SELECT_GROUP': {
       // Clicking a locked tile unlocks it (instructor undo). Clicking a pending tile makes it active.
       const locked = s.choices[a.groupId]?.[s.round]
@@ -144,6 +159,18 @@ export function clearSession() {
   } catch {
     /* ignore */
   }
+}
+
+/**
+ * Plain-English name for where STEP_BACK would land, used as the button's tooltip so the
+ * instructor can confirm the destination before clicking. null means back is unavailable.
+ */
+export function backTarget(s: Session): string | null {
+  if (s.phase === 'final' && s.realized) return 'the projections, before the multiplier was applied'
+  if (s.phase === 'final') return 'the Round 4 consequences'
+  if (s.phase === 'reveal') return `the Round ${s.round} decisions, where choices can still be changed`
+  if (s.phase === 'decide') return s.round > 1 ? `the Round ${s.round - 1} results` : 'the case briefing'
+  return null
 }
 
 /** True once every group has locked a choice for the current round. */

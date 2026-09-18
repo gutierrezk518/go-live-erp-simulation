@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { BENCHMARK } from '../config/rounds'
 import { ValueChart } from '../components/ValueChart'
-import { Button, Chip, ReadinessPill, TopBar } from '../components/ui'
+import { BackButton, Button, Chip, ReadinessPill, TopBar } from '../components/ui'
 import { markerPath, seriesStyle } from '../components/series'
 import { finalResult, fmtM, fmtPct } from '../engine/scoring'
-import type { Action, Session } from '../engine/session'
+import { backTarget, type Action, type Session } from '../engine/session'
 
 interface Props {
   s: Session
@@ -24,6 +24,7 @@ export function FinalScreen({ s, dispatch, onExport, onNewSession }: Props) {
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <TopBar
+        back={<BackButton onClick={() => dispatch({ type: 'STEP_BACK' })} target={backTarget(s)} />}
         left={<Chip tone="gold">{s.realized ? 'Final results' : 'Round 4 complete'}</Chip>}
         right={
           <>

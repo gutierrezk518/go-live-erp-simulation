@@ -1,9 +1,9 @@
 import { ROUNDS } from '../config/rounds'
 import { ValueChart } from '../components/ValueChart'
-import { Button, Chip, ReadinessPill, TopBar } from '../components/ui'
+import { BackButton, Button, Chip, ReadinessPill, TopBar } from '../components/ui'
 import { markerPath, seriesStyle } from '../components/series'
 import { readinessLabel, totalsThrough } from '../engine/scoring'
-import type { Action, Session } from '../engine/session'
+import { backTarget, type Action, type Session } from '../engine/session'
 
 interface Props {
   s: Session
@@ -17,7 +17,10 @@ export function RevealScreen({ s, dispatch }: Props) {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
-      <TopBar left={<Chip tone="gold">Round {s.round} · What happened</Chip>} />
+      <TopBar
+        back={<BackButton onClick={() => dispatch({ type: 'STEP_BACK' })} target={backTarget(s)} />}
+        left={<Chip tone="gold">Round {s.round} · What happened</Chip>}
+      />
 
       <div className="grid flex-1 grid-cols-[1fr_1.15fr] gap-6 overflow-hidden px-8 py-5">
         {/* Consequences */}

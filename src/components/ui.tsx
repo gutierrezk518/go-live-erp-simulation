@@ -35,11 +35,33 @@ export function Chip({ children, tone = 'cherry' }: { children: ReactNode; tone?
   return <span className={`display caps inline-block rounded-md px-3 py-1 text-[15px] font-bold ${tones}`}>{children}</span>
 }
 
+/**
+ * Steps back one screen. Deliberately understated and parked in the top bar, far from the
+ * large forward buttons, so it reads as a correction rather than part of the flow.
+ */
+export function BackButton({ onClick, target }: { onClick: () => void; target: string | null }) {
+  if (!target) return null
+  return (
+    <button
+      onClick={onClick}
+      title={`Go back to ${target}`}
+      aria-label={`Go back to ${target}`}
+      className="display flex shrink-0 items-center gap-1.5 rounded-lg border border-white/45 bg-white/10 px-3 py-1.5 text-[16px] font-bold text-white transition-colors hover:bg-white/25 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/50"
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+        <path d="M10 3 L5 8 L10 13" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      Back
+    </button>
+  )
+}
+
 /** Cherry band across the top of every screen. */
-export function TopBar({ left, right }: { left: ReactNode; right?: ReactNode }) {
+export function TopBar({ left, right, back }: { left: ReactNode; right?: ReactNode; back?: ReactNode }) {
   return (
     <header className="flex items-center justify-between bg-cherry px-8 py-3 text-white shadow-md">
       <div className="flex items-center gap-4">
+        {back}
         <div className="display text-[22px] font-black leading-none tracking-tight">
           GO-LIVE <span className="font-normal text-cherry-100">/ ERP Investment Simulation</span>
         </div>

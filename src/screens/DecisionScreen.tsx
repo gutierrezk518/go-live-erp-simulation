@@ -1,9 +1,9 @@
 import { OVERRUN_RULE, ROUNDS } from '../config/rounds'
 import { GroupTile } from '../components/GroupTile'
 import { OptionCard } from '../components/OptionCard'
-import { Button, Chip, TopBar } from '../components/ui'
+import { BackButton, Button, Chip, TopBar } from '../components/ui'
 import { fmtM, overrunIfChosen, totalsThrough } from '../engine/scoring'
-import { allLocked, type Action, type Session } from '../engine/session'
+import { allLocked, backTarget, type Action, type Session } from '../engine/session'
 
 interface Props {
   s: Session
@@ -23,6 +23,7 @@ export function DecisionScreen({ s, dispatch }: Props) {
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <TopBar
+        back={<BackButton onClick={() => dispatch({ type: 'STEP_BACK' })} target={backTarget(s)} />}
         left={<Chip tone="gold">Round {s.round} of 4</Chip>}
         right={
           <Button variant="ghost" size="md" className="text-white hover:bg-cherry-deep" onClick={() => dispatch({ type: 'SHOW_BRIEF' })}>

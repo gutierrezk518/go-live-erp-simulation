@@ -116,6 +116,27 @@ where it lands once the multiplier is applied:
 If the browser is closed or refreshed at any point, reopen the URL: the session restores
 automatically, and the Setup screen also offers *Resume previous session*.
 
+## If someone clicks ahead
+
+There is a **Back** button in the top-left of every screen after the briefing. It undoes exactly
+one step and it is deliberately parked away from the large forward buttons. Hovering it says
+where it will land.
+
+It walks the whole flow backward, one click at a time:
+
+```
+final (multiplier applied) → final (projections) → Round 4 reveal → Round 4 decisions
+  → Round 3 reveal → Round 3 decisions → … → Round 1 decisions → the case briefing
+```
+
+The first click on the final screen is the important one: it un-applies the readiness multiplier
+and puts the projections back, so a student clicking the gold button early costs you nothing.
+
+**No answers are lost when you go back.** Every screen is derived from the stored choices rather
+than from accumulated state, so returning to an earlier round finds every group still locked in.
+To actually change an answer, click that group's tile to unlock it, pick again, and confirm.
+Unlocking only clears that one round for that one group; their other rounds are untouched.
+
 ## Stack
 
 Vite · React 19 · TypeScript · Tailwind v4 · Recharts 3. Styling follows the Fox School
