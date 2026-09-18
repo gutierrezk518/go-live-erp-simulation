@@ -1,5 +1,9 @@
 # Go-Live — ERP Investment Simulation
 
+### ▶ Play it: **https://gutierrezk518.github.io/go-live-erp-simulation/**
+
+Open that link on the classroom laptop and press F11 for full screen. Nothing to install.
+
 A single-laptop classroom simulation for MIS 2101, Week 4 (Enterprise Resource Planning).
 Eight student groups run an ERP implementation at **Kelso Foodservice Equipment**, a commercial
 kitchen equipment manufacturer, across four investment rounds. After Round 4 a readiness
@@ -14,6 +18,9 @@ That inversion is the lesson.
 Runs fully offline. No backend, no accounts. State autosaves to `localStorage` after every click.
 
 ## Run it
+
+The hosted link above is the simplest option and works offline once the page has loaded, since
+the app makes no network calls after load. To run it locally instead:
 
 ```bash
 npm install
